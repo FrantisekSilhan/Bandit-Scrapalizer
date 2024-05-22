@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Bandit Scrapalizer",
+  "description": "Converts bandit.camp scrap item value to steam market value ratio",
+  "version": "0.1.5",
+  "action": {
+    "default_icon": "logo.png"
+  },
+  "icons": {
+    "128": "icon.png"
+  },
+  "permissions": [
+    "activeTab",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": [
+    "*://bandit.camp/*",
+    "*://rust.xdd.moe/api/*"
+  ],
+  "content_scripts": [
+    {
+      "js": ["scrapalizer.js"],
+      "matches": [
+        "*://bandit.camp/*",
+        "*://rust.xdd.moe/api/*"
+      ]
+    }
+  ]
+}
