@@ -55,7 +55,7 @@ function addItems(items) {
         const itemName = item.querySelector(".name").innerText;
         const itemScrapPrice = item.querySelector("div.price .lh-1.font-weight-bold").innerText.replace(/,/g, '');
   
-        const response = await fetch(`https://db.rust.xdd.moe/api/item?item=${itemName}`, {
+        const response = await fetch(`https://db.rust.xdd.moe/api/item?item=${encodeURIComponent(itemName)}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
