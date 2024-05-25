@@ -45,20 +45,15 @@ function addItems(items) {
       const div = document.createElement("div");
       div.classList.add("scrapalizer-info");
       div.style.display = "flex";
-      div.style.justifyContent = "space-between";
+      div.style.justifyContent = "flex-end";
       div.style.alignItems = "center";
-      const button = document.createElement("button");
-      div.appendChild(button);
-      button.innerHTML = "Sc";
-      button.style.backgroundColor = "lightblue";
-      button.style.color = "black";
-      button.style.fontWeight = "bold";
-      button.style.borderRadius = "5px";
-      button.addEventListener("click", async (event) => {
+      item.addEventListener("mouseenter", async (event) => {
         event.stopPropagation();
+        const supplyInfo = item.querySelector(".ml-1.lh-1.mt-1.font-weight-bold.green200--text");
+        if (supplyInfo && supplyInfo.innerText.includes("%")) return;
+
         const itemName = item.querySelector(".name").innerText;
         const itemScrapPrice = item.querySelector("div.price .lh-1.font-weight-bold").innerText.replace(/,/g, '');
-        button.style.backgroundColor = "red";
   
         const response = await fetch(`https://db.rust.xdd.moe/api/item?item=${itemName}`, {
           method: "GET",
@@ -89,20 +84,35 @@ function addItems(items) {
         if (itemPrice === 0) {
           infoElement.innerText = "N/A";
           div.appendChild(infoElement);
-          button.style.backgroundColor = "lightblue";
           return;
         }
 
         const steamPriceWithoutFee = Math.floor(((itemPrice / 100) / 1.15 + (itemPrice <= 15 ? 0 : 0.01)) * 100) / 100;
+        const percentage = Math.round((steamPriceWithoutFee / itemScrapPrice) * 100);
 
-        infoElement.innerText = `(${Math.round((steamPriceWithoutFee / itemScrapPrice) * 100)}%) $${steamPriceWithoutFee}`
+        infoElement.innerText = `(${percentage}%) $${steamPriceWithoutFee}`
   
         div.appendChild(infoElement);
-        button.style.backgroundColor = "lightblue";
 
+        const supplyInfoClone = supplyInfo.cloneNode(true);
+        supplyInfo.style.setProperty("color", "white", "important");
+        supplyInfo.style.backgroundColor = "black";
+        supplyInfo.style.padding = "4px";
+        supplyInfo.style.fontSize = "12px";
+        supplyInfo.innerText = `(${percentage}%)`;
+        supplyInfo.parentNode.appendChild(supplyInfoClone);
       });
       return div;
-    }
+    };
+
+    const infoElement = document.createElement("div");
+    item.style.position = "relative";
+    infoElement.style.position = "absolute";
+    infoElement.style.inset = "0";
+    infoElement.style.pointerEvents = "none";
+    infoElement.style.zIndex = "9999";
+    infoElement.style.border = "1px solid lightblue";
+    item.appendChild(infoElement);
 
     let meta = item.querySelector(".meta");
     if (!meta) {
