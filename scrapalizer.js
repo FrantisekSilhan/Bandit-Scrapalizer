@@ -60,7 +60,7 @@ function addItems(items) {
         const itemScrapPrice = item.querySelector("div.price .lh-1.font-weight-bold").innerText.replace(/,/g, '');
         button.style.backgroundColor = "red";
   
-        const response = await fetch(`https://rust.xdd.moe/api/item?item=${itemName}`, {
+        const response = await fetch(`https://db.rust.xdd.moe/api/item?item=${itemName}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,9 @@ function addItems(items) {
   
         if (response.ok) {
           const data = await response.json();
-          itemPrice = data.price;
+          if (data.success) {
+            itemPrice = data.data.sell_price;
+          }
         }
   
         let infoElement = div.querySelector("p");
