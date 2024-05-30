@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "Bandit Scrapalizer",
   "description": "Converts bandit.camp scrap item value to steam market value ratio",
-  "version": "0.1.8",
+  "version": "0.1.9",
+  "update_url": "https://db.rust.xdd.moe/updates.xml",
   "action": {
     "default_icon": "logo.png"
   },
