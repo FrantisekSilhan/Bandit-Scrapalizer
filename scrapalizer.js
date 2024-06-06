@@ -29,13 +29,54 @@ reloadButton.style.color = "black";
 reloadButton.style.fontWeight = "bold";
 reloadButton.style.font = "open-sans";
 reloadButton.style.borderRadius = "5px";
-reloadButton.style.position = "fixed";
-reloadButton.style.bottom = "10px";
-reloadButton.style.right = "10px";
-reloadButton.style.zIndex = "9999";
 reloadButton.style.padding = "5px";
 reloadButton.addEventListener("click", reloadItems);
-document.body.appendChild(reloadButton);
+
+const switchButtonWrapper = document.createElement("div");
+switchButtonWrapper.style.display = "flex";
+switchButtonWrapper.style.alignItems = "center";
+switchButtonWrapper.style.gap = "5px";
+
+const switchButton = document.createElement("button");
+switchButton.innerHTML = "Use insta-sell ratio";
+switchButton.style.backgroundColor = "lightblue";
+switchButton.style.color = "black";
+switchButton.style.fontWeight = "bold";
+switchButton.style.font = "open-sans";
+switchButton.style.borderRadius = "5px";
+switchButton.style.padding = "5px";
+
+const switchIndicator = document.createElement("div");
+switchIndicator.style.backgroundColor = "red";
+switchIndicator.style.width = "16px";
+switchIndicator.style.height = "16px";
+switchIndicator.style.borderRadius = "50%";
+
+const useSteamPrice = () => switchIndicator.style.backgroundColor === "red";
+
+switchButton.addEventListener("click", () => {
+  switchIndicator.style.backgroundColor = useSteamPrice() ? "green" : "red";
+  document.querySelectorAll(".scrapalizer-info").forEach((info) => info.remove());
+});
+
+switchButtonWrapper.appendChild(switchButton);
+switchButtonWrapper.appendChild(switchIndicator);
+
+const extensionInfo = document.createElement("div");
+extensionInfo.style.position = "fixed";
+extensionInfo.style.bottom = "10px";
+extensionInfo.style.right = "10px";
+extensionInfo.style.zIndex = "9999";
+extensionInfo.style.padding = "5px";
+extensionInfo.style.display = "flex";
+extensionInfo.style.flexDirection = "column";
+extensionInfo.style.alignItems = "flex-end";
+extensionInfo.style.gap = "5px";
+
+extensionInfo.appendChild(reloadButton);
+extensionInfo.appendChild(switchButtonWrapper);
+
+document.body.appendChild(extensionInfo);
 
 function addItems(items) {
   items.forEach((item) => {
@@ -54,7 +95,7 @@ function addItems(items) {
 
         const itemName = item.querySelector(".name").innerText;
         const itemScrapPrice = item.querySelector("div.price .lh-1.font-weight-bold").innerText.replace(/,/g, '');
-  
+
         const response = await fetch(`https://db.rust.xdd.moe/api/item?item=${encodeURIComponent(itemName)}`, {
           method: "GET",
           headers: {
@@ -65,9 +106,9 @@ function addItems(items) {
         let itemPrice = 0;
   
         if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            itemPrice = data.data.sell_price;
+          const responseData = await response.json();
+          if (responseData.success) {
+            itemPrice = useSteamPrice() ? responseData.data.sell_price : responseData.data.insta_sell_price;
           }
         }
   
@@ -100,6 +141,7 @@ function addItems(items) {
         supplyInfo.style.padding = "4px";
         supplyInfo.style.fontSize = "12px";
         supplyInfo.innerText = `(${percentage}%)`;
+        supplyInfo.classList.add("scrapalizer-info");
         supplyInfo.parentNode.appendChild(supplyInfoClone);
       });
       return div;

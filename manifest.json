@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Bandit Scrapalizer",
   "description": "Converts bandit.camp scrap item value to steam market value ratio",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "update_url": "https://db.rust.xdd.moe/updates.xml",
   "action": {
     "default_icon": "logo.png"
@@ -13,7 +13,8 @@
   "permissions": [
     "activeTab",
     "declarativeNetRequest",
-    "declarativeNetRequestFeedback"
+    "declarativeNetRequestFeedback",
+    "storage"
   ],
   "host_permissions": [
     "*://bandit.camp/*"
@@ -25,5 +26,8 @@
         "*://bandit.camp/*"
       ]
     }
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
 }
