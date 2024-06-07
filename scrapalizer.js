@@ -80,7 +80,7 @@ document.body.appendChild(extensionInfo);
 
 function addItems(items) {
   items.forEach((item) => {
-    if (item.querySelector(".scrapalizer-info")) return;
+    if (item.querySelector(".scrapalizer-ratio")) return;
 
     const addListeners = () => {
       const div = document.createElement("div");
@@ -141,7 +141,7 @@ function addItems(items) {
         supplyInfo.style.padding = "4px";
         supplyInfo.style.fontSize = "12px";
         supplyInfo.innerText = `(${percentage}%)`;
-        supplyInfo.classList.add("scrapalizer-info");
+        supplyInfo.classList.add("scrapalizer-ratio");
         supplyInfo.parentNode.appendChild(supplyInfoClone);
       });
       return div;
