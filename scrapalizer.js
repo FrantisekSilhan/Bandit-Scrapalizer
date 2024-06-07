@@ -56,7 +56,7 @@ const useSteamPrice = () => switchIndicator.style.backgroundColor === "red";
 
 switchButton.addEventListener("click", () => {
   switchIndicator.style.backgroundColor = useSteamPrice() ? "green" : "red";
-  document.querySelectorAll(".scrapalizer-info").forEach((info) => info.remove());
+  document.querySelectorAll(".scrapalizer-ratio").forEach((info) => info.remove());
 });
 
 switchButtonWrapper.appendChild(switchButton);
@@ -80,7 +80,7 @@ document.body.appendChild(extensionInfo);
 
 function addItems(items) {
   items.forEach((item) => {
-    if (item.querySelector(".scrapalizer-ratio")) return;
+    if (item.querySelector(".scrapalizer-info")) return;
 
     const addListeners = () => {
       const div = document.createElement("div");
